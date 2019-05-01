@@ -4,39 +4,62 @@ def lerArquivo(fileName="agendasuspeitos.txt"):
     for i in range(len(conteudo)):
         conteudo[i] = conteudo[i].replace("\n","")
     return conteudo
+
 def listaNomes(chamadas):
   listaNomes=[]
   for i in range(len(chamadas)):
     if chamadas[i].find(":")>=0:
-      ind=i
       pos = chamadas[i].find(":")
       nome = chamadas[i][0:pos:1]
       listaNomes.append(nome)
   return listaNomes
     
 def imprimeAgenda(nome,agenda):
+    existe = False
     tam=len(agenda)
-    for i in range(tam):
-      if agenda[i].find(nome)>=0:
-        ind=i
-        pos=agenda[i].find(nome)    
-    agendasus=agenda[ind][(len(nome)+13):]
-    agendasus=agendasus.split(",")
-    return agendasus
+    Nomes=listaNomes(chamadas)
+    for e in Nomes:
+      if e == nome:
+        existe = True
+        if existe:
+          for i in range(tam):
+            if agenda[i].find(nome)!=-1:
+              agendasus=agenda[i][(len(nome)+13):]
+              agendasus=agendasus.split(",")
+              print("Agenda do suspeito %s:" %nome)
+              for e in agendasus:
+                print(e)
+        else:
+          print("Suspeito não encontrado.")
+    return 
 
-def pegaNum(nome,agenda):
-    tam=len(agenda)
-    for i in range(tam):
-      if agenda[i].find(nome)>=0:
-        ind=i
-        pos=agenda[i].find(nome)
-    if nome == "joao":
-      res=agenda[ind][(len(nome)+1):(len(nome)+12)]
-    elif nome == "pedro":
-      res=agenda[ind][(len(nome)+1):(len(nome)+12)]
-    elif nome == "antonio":
-      res=agenda[ind][(len(nome)+1):(len(nome)+12)]
-    return res
+def listaNum(agenda):
+    listaNum=[]
+    for i in range(len(agenda)):
+      if agenda[i].find("-")>=0:
+        pos1 = agenda[i].find("-")
+        pos2 = agenda[i].find(":")
+        num=agenda[i][(pos1+1):pos2]
+        listaNum.append(num)
+    return listaNum
+
+def listAgenda():
+    listaNome = listaNomes(chamadas)
+    listaNume = listaNum(agenda)
+    for e in listaNome:
+      nome = e
+      saida=" "
+      for i in range(len(agenda)):
+        if agenda[i].find(nome)!=-1:
+          agenda2=agenda[i][(len(nome)+13):]
+          for ele in listaNume:
+            num = ele
+            if agenda2.find(num)!=-1:
+              pos=listaNume.index(num)
+              nome2=listaNome[pos]
+              saida=saida+nome2+" "
+      print("%s: %s"%(nome, saida))
+    return 
 
 while True:
   #MENU
@@ -53,52 +76,16 @@ while True:
   pos=conteudo.index("chamadas")
   agenda=conteudo[0:pos]
   chamadas=conteudo[pos:]
+  #area de testes
 
   if op == "1":
     nome=str(input("Nome do suspeito: "))
     print()
     #chamando a função imprimeAgenda
-    agendasus=imprimeAgenda(nome,agenda)
-    print("Agenda do suspeito %s:" %nome)  
-    for e in agendasus:
-      print(e)
+    imprimeAgenda(nome,agenda)
     print()
   elif op == "2":
-    listaNomes = listaNomes(chamadas)
-    for nome in listaNomes:
-      if nome == "joao":
-        numPedro = pegaNum("pedro", agenda)
-        numAntonio = pegaNum("antonio", agenda)
-        agendaJoao = imprimeAgenda("joao",agenda)
-        saida = "joao: "
-        for i in range(len(agendaJoao)):
-          if agendaJoao[i].find(numPedro)>=0:
-            saida = saida + "pedro"
-          if agendaJoao[i].find(numAntonio)>=0:
-            saida = saida + ", antonio"
-        print(saida)
-      if nome == "pedro":
-        numJoao = pegaNum("joao", agenda)
-        numAntonio = pegaNum("antonio", agenda)
-        agendaPedro = imprimeAgenda("pedro", agenda)
-        saida = "pedro: "
-        for i in range(len(agendaPedro)):
-          if agendaPedro[i].find(numJoao)>=0:
-            saida = saida + "joao"
-          if agendaPedro[i].find(numAntonio)>=0:
-            saida = saida + ", antonio"
-        print(saida)
-      if nome == "antonio":
-        numJoao = pegaNum("joao", agenda)
-        numPedro = pegaNum("pedro", agenda)
-        agendaAntonio = imprimeAgenda("antonio", agenda)
-        saida = "antonio: "
-        for i in range(len(agendaAntonio)):
-          if agendaAntonio[i].find(numJoao)>=0:
-            saida = saida + "joao "
-          if agendaAntonio[i].find(numPedro)>=0:
-            saida = saida + " pedro"
-        print(saida)
+    listAgenda()
     print()
   elif op == "3":
     #chamar função reciproca
