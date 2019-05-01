@@ -15,6 +15,7 @@ def listaNomes(chamadas):
   return listaNomes
     
 def imprimeAgenda(nome,agenda):
+    nome=nome.lower()
     existe = False
     tam=len(agenda)
     Nomes=listaNomes(chamadas)
@@ -94,6 +95,7 @@ while True:
   elif op == "4":
     #chamar função nível de suspeição
     print("4- Visualizar contatos com alto nível de suspeição")
+
     print()
   elif op == "5":
     break
