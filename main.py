@@ -16,23 +16,19 @@ def listaNomes(chamadas):
     
 def imprimeAgenda(nome,agenda):
     nome=nome.lower()
+    agendasus=[]
     existe = False
     tam=len(agenda)
     Nomes=listaNomes(chamadas)
     for e in Nomes:
       if e == nome:
         existe = True
-        if existe:
+        if existe == True:
           for i in range(tam):
             if agenda[i].find(nome)!=-1:
               agendasus=agenda[i][(len(nome)+13):]
               agendasus=agendasus.split(",")
-              print("Agenda do suspeito %s:" %nome)
-              for e in agendasus:
-                print(e)
-        else:
-          print("Suspeito não encontrado.")
-    return 
+    return agendasus
 
 def listaNum(agenda):
     listaNum=[]
@@ -61,6 +57,29 @@ def listAgenda():
               saida=saida+nome2+" "
       print("%s: %s"%(nome, saida))
     return 
+def suspeicao():
+    listaNome = listaNomes(chamadas)
+    listaNume = listaNum(agenda)
+    for e in listaNome:
+      nome = e
+      for i in range(len(chamadas)):
+        if chamadas[i].find(nome)!=-1:
+          chamadas2=chamadas[i][(len(nome)+1):]
+          chamadas2=chamadas2.split(",")
+          for ele in listaNume:
+            num = ele
+            pos=0
+            suspeicao=0
+            for l in range(pos,len(chamadas2),1):
+              if chamadas2[l]==num:
+                pos=chamadas2[l].find(num)
+                suspeicao+=1
+                pos+=1
+            if suspeicao==numCham:
+              pos2=listaNume.index(num)
+              nome2=listaNome[pos2]
+              print("%s<->%s Alto nível de suspeição!" %(nome, nome2))
+    return
 
 while True:
   #MENU
@@ -82,8 +101,15 @@ while True:
   if op == "1":
     nome=str(input("Nome do suspeito: "))
     print()
+    agendaSus=imprimeAgenda(nome,agenda)
+    if len(agendaSus)>0:
+      print("Agenda do suspeito %s:" %nome)
+      for e in agendaSus:
+        print(e)
+    else:
+      print("Suspeito não existe. Tente Novamente.")
     #chamando a função imprimeAgenda
-    imprimeAgenda(nome,agenda)
+    
     print()
   elif op == "2":
     listAgenda()
@@ -94,8 +120,11 @@ while True:
     print()
   elif op == "4":
     #chamar função nível de suspeição
-    print("4- Visualizar contatos com alto nível de suspeição")
-
+    numCham=int(input("Quantidade mínima de chamadas entre os suspeitos: "))
+    print()
+    print("Lista de reciprocidades com chamadas:")
+    print()
+    suspeicao()
     print()
   elif op == "5":
     break
