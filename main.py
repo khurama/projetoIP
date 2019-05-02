@@ -109,7 +109,6 @@ while True:
     else:
       print("Suspeito não existe. Tente Novamente.")
     #chamando a função imprimeAgenda
-    
     print()
   elif op == "2":
     listAgenda()
@@ -117,6 +116,29 @@ while True:
   elif op == "3":
     #chamar função reciproca
     print("3- Visualizar reciprocidades")
+    listaNome = listaNomes(chamadas)
+    listaNume = listaNum(agenda)
+    for e in listaNome:
+      nome = e
+      for i in range(len(agenda)):
+        if agenda[i].find(nome)!=-1:
+          agendas2=agenda[i][(len(nome)+13):]
+          agendas2=agendas2.split(",")
+          for ele in listaNume:
+            num = ele
+            for l in range(len(agendas2)):
+              if agendas2[l]==num:
+                pos=listaNume.index(num)
+                nome2=listaNome[pos]
+                ind=listaNome.index(nome)
+                num2=listaNume[ind]
+                for j in range(len(agenda)):
+                  if agenda[j].find(nome2)!=-1:
+                    agenda3=agenda[j][(len(nome2)+13):]
+                    agenda3=agenda3.split(",")
+                    for r in range(len(agenda3)):
+                      if agenda3[r]==num2:
+                        print("%s <-> %s" %(nome,nome2))
     print()
   elif op == "4":
     #chamar função nível de suspeição
